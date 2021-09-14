@@ -12,10 +12,13 @@ const MyMap = () => {
   const [map, setMap] = useState()
   const [longitude, setLongitude] = useState(8.259516645446809) // <-- Default position (Mainz,Germany)
   const [latitude, setLatitude] = useState(50.00147223178192) // *
+
   const origin = {
     lng: longitude,
     lat: latitude,
   }
+
+  // ===== We need to convert the points ====
   const convertToPoints = (lngLat) => {
     return {
         point: {
@@ -24,7 +27,7 @@ const MyMap = () => {
         }
     }
   }
-
+  // ===== Drawing Area Function
   const drawRoute = (geoJson, map) => {
     if (map.getLayer('route')) {
         map.removeLayer('route')
@@ -45,6 +48,7 @@ const MyMap = () => {
     })
   }
 
+  // ===== We build our DeliveryMarker to pass the coordinates were ever we wanted to the map
   const addDeliveryMarker = (lngLat, map) => {
     const element = document.createElement('div')
     element.className = 'marker-delivery'
@@ -102,21 +106,22 @@ const MyMap = () => {
 
     const sortDestinations = (locations) => {
         const pointsForDestinations = locations.map((destination) => {
-            return convertToPoints(destination)
+            return convertToPoints(destination) // <-- Pass the location to my converter
         })
         
+        // ===== Properties for the MatrixRouting
         const callParameters = {
             key: process.env.REACT_APP_RUN_AWAY_TOM_TOM_API_KEY,
-            destinations: pointsForDestinations,
-            origins: [convertToPoints(origin)],
+            destinations: pointsForDestinations, // <-- We get all points to calculate the matrix
+            origins: [convertToPoints(origin)], // <-- We need to pass the origin position as a parameter
         }
-        
-        // ==== The Promise allows you to do the matrix routing for this we implement @tomtom-international/web-sdk-services
+
+        // ===== The Promise allows you to do the matrix routing for this we implement @tomtom-international/web-sdk-services
         return new Promise((resolve, reject) => {
           ttapi.services
             .matrixRouting(callParameters)
             .then((matrixAPIResults) => {
-              const results = matrixAPIResults.matrix[0]
+              const results = matrixAPIResults.matrix[0] //<--- get my results
 
               const resultsArray = results.map((result, index) => {
                 return {
@@ -126,11 +131,11 @@ const MyMap = () => {
               })
 
               resultsArray.sort((a, b) => {
-                  return a.drivingtime - b.drivingtime
+                return a.drivingtime - b.drivingtime
               })
 
               const sortedLocations = resultsArray.map((result) => {
-                  return result.location
+                return result.location
               })
 
               resolve(sortedLocations)
@@ -155,8 +160,8 @@ const MyMap = () => {
     }
 
     map.on('click', (e) => {
-      destinations.push(e.lngLat)
-      addDeliveryMarker(e.lngLat, map)
+      destinations.push(e.lngLat) // <-- We fill here the destinations[] with the coordinates
+      addDeliveryMarker(e.lngLat, map) // <-- We pass the clicked parameters to our function
       recalculateRoutes()
     })
 
