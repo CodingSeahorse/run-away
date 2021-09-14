@@ -1,0 +1,28 @@
+@import './color.scss';
+
+*,
+*::before,
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
+}
+
+html {
+  font-size: 62.5%;
+  scroll-behavior: smooth;
+  color: $fontColorBright;
+  background-color: $pageColor;
+}
+
+body {
+  position: relative;
+  font-size: 1.8rem;
+  box-sizing: border-box;
+}
+
+.App {
+  position: relative;
+}

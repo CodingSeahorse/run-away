@@ -1,0 +1,84 @@
+@import '../../helpers/color';
+
+.container{
+    display: grid;
+    align-items: center;
+    justify-items: center;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr;
+    
+    &__describtion{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+        color: white;
+        background-color: $mainColor;
+        font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        text-align: center;
+
+        &__content{
+            &__title{
+                margin-bottom: 5rem;
+                text-decoration: underline;
+            }
+        }
+    }
+
+    &__map{
+        width: 80rem;
+        height: 60rem;
+        grid-column-start: 2;
+        grid-column-end:2;
+        color: $fontColorDark;
+    }
+
+    &__searchbar{
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+        background-color: $secondColor;
+        
+        &__title{
+            margin-right: 5rem;
+        }
+
+        &__subtitle{
+            margin-right: 5rem;
+            margin-top: 4rem;
+            font-size: 1.4rem;
+        }
+
+        &__area{
+            margin-top: 5rem;
+
+            &__inputField{
+                width: 20rem;
+                height: 5rem;
+            }
+
+            &__var{
+                margin-left: 2rem;
+            }
+        }
+    }
+}
+
+.marker{
+    width: 4.8rem;
+    height: 4.8rem;
+    background-image: 
+        url('../../bag/icons/thief-icon.png');
+    background-position: center;
+    background-color: $secondColor;
+    border-radius: 4rem;
+    border: 0.2rem solid $mainColor;
+}
+
+input{
+    padding-left: 1rem;
+}
